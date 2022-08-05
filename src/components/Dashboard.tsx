@@ -1,35 +1,35 @@
 import { PlusCircle } from "phosphor-react";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from "react";
 import Clipboard from "../assets/Clipboard.png";
 import { TaskCard } from "./TaskCard";
 
 import styles from "./Dashboard.module.scss";
 
 export function Dashboard() {
-  const [tasks, setTasks] = useState(["Task 1", "Task 2", "Task 3"]);
+  const [tasks, setTasks] = useState<string[]>(["Task 1", "Task 2", "Task 3"]);
   const [newTask, setNewTask] = useState("");
 
-  function handleSubmitTask(event: any) {
+  function handleSubmitTask(event: FormEvent) {
     event.preventDefault();
 
     setTasks([...tasks, newTask]);
     setNewTask("");
   }
 
-  function handleNewTaskChange(event: any) {
+  function handleNewTaskChange(event: ChangeEvent<HTMLInputElement>) {
     event.target.setCustomValidity("");
     setNewTask(event.target.value);
   }
 
   function deleteTask(taskToDelete: string) {
-    const tasksWithoutDeletedOne = tasks.filter((task) => {
+    const tasksWithoutDeletedOne = tasks.filter((task: string) => {
       return task !== taskToDelete;
     });
 
     setTasks(tasksWithoutDeletedOne);
   }
 
-  function handleNewTaskInvalid(event: any) {
+  function handleNewTaskInvalid(event: InvalidEvent<HTMLInputElement>) {
     event.target.setCustomValidity("Este campo é obrigatório!");
   }
 
@@ -56,9 +56,9 @@ export function Dashboard() {
           <span>
             Tarefas criadas <p>{tasks.length}</p>
           </span>
-          <span>
+          {/* <span>
             Concluídas <p>0</p>
-          </span>
+          </span> */}
         </header>
 
         {tasks.length !== 0 ? (

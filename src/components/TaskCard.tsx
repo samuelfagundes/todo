@@ -4,7 +4,12 @@ import { BsFillCheckCircleFill } from "react-icons/bs";
 import styles from "./TaskCard.module.scss";
 import { useState } from "react";
 
-export function TaskCard({ content, onDeleteTask }: any) {
+interface Task {
+  content: string;
+  onDeleteTask: (content: string) => void;
+}
+
+export function TaskCard({ content, onDeleteTask }: Task) {
   const [hasFinished, setHasFinished] = useState(false);
 
   function handleDeleteTask() {
