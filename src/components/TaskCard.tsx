@@ -5,29 +5,33 @@ import styles from "./TaskCard.module.scss";
 import { useState } from "react";
 
 interface Task {
+  id: string;
   content: string;
-  onDeleteTask: (content: string) => void;
+  isCompleted: boolean;
+  onDeleteTask: (id: string) => void;
+  onCompleteTask: (id: string) => void;
 }
 
-export function TaskCard({ content, onDeleteTask }: Task) {
-  const [hasFinished, setHasFinished] = useState(false);
-
+export function TaskCard({
+  id,
+  content,
+  isCompleted,
+  onDeleteTask,
+  onCompleteTask,
+}: Task) {
   function handleDeleteTask() {
-    onDeleteTask(content);
+    onDeleteTask(id);
   }
 
-  function handleChangeCheckboxStatus() {
-    setHasFinished(!hasFinished);
+  function handleCompleteTask() {
+    onCompleteTask(id);
   }
 
   return (
     <div className={styles.task}>
-      {hasFinished ? (
+      {isCompleted ? (
         <div className={styles.finished}>
-          <button
-            className={styles.checkbox}
-            onClick={handleChangeCheckboxStatus}
-          >
+          <button className={styles.checkbox} onClick={handleCompleteTask}>
             <BsFillCheckCircleFill size={24} />
           </button>
           <span>{content}</span>
@@ -39,7 +43,7 @@ export function TaskCard({ content, onDeleteTask }: Task) {
         <div className={styles.inProgress}>
           <button
             className={styles.checkbox}
-            onClick={handleChangeCheckboxStatus}
+            onClick={handleCompleteTask}
           ></button>
           <span>{content}</span>
           <button className={styles.icon} onClick={handleDeleteTask}>
