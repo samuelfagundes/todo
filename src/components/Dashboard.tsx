@@ -13,11 +13,7 @@ type Interface = {
 };
 
 export function Dashboard() {
-  const [tasks, setTasks] = useState<Interface[]>([
-    { id: uuidv4(), content: "task1", hasCompleted: false },
-    { id: uuidv4(), content: "task2", hasCompleted: false },
-    { id: uuidv4(), content: "task3", hasCompleted: false },
-  ]);
+  const [tasks, setTasks] = useState<Interface[]>([]);
   const [newTask, setNewTask] = useState("");
 
   function handleSubmitTask(event: FormEvent) {

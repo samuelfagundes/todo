@@ -2,7 +2,6 @@ import { CgTrash } from "react-icons/cg";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 
 import styles from "./TaskCard.module.scss";
-import { useState } from "react";
 
 interface Task {
   id: string;
