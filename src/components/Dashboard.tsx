@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { PlusCircle } from "phosphor-react";
-import { ChangeEvent, FormEvent, InvalidEvent, useState } from "react";
+import { ChangeEvent, FormEvent, InvalidEvent, useCallback, useEffect, useState } from "react";
 import Clipboard from "../assets/Clipboard.png";
 import { TaskCard } from "./TaskCard";
 
@@ -9,19 +9,32 @@ import styles from "./Dashboard.module.scss";
 type Interface = {
   id: string;
   content: string;
-  hasCompleted: boolean;
+  isCompleted: boolean;
 };
 
 export function Dashboard() {
   const [tasks, setTasks] = useState<Interface[]>([]);
   const [newTask, setNewTask] = useState("");
 
+  const retriveTasks = window.localStorage.getItem('todo-items')
+
+  useEffect(() => {
+    if (retriveTasks !== null && retriveTasks.length >= 1) {
+      setTasks(JSON.parse(retriveTasks))
+      console.log(retriveTasks)
+    }
+  },[])
+
+  useEffect(() => {
+    window.localStorage.setItem('todo-items', JSON.stringify(tasks))
+  }, [tasks])
+
   function handleSubmitTask(event: FormEvent) {
     event.preventDefault();
     const newTaskObject = {
       id: uuidv4(),
       content: newTask,
-      hasCompleted: false,
+      isCompleted: false,
     };
 
     setTasks([...tasks, newTaskObject]);
@@ -44,7 +57,7 @@ export function Dashboard() {
   function completeTask(taskId: string) {
     const newTaskList = tasks.map((task) => {
       if (taskId === task.id) {
-        return { ...task, hasCompleted: !task.hasCompleted };
+        return { ...task, isCompleted: !task.isCompleted };
       }
       return task;
     });
@@ -56,7 +69,7 @@ export function Dashboard() {
   }
 
   const tasksFinished = tasks.filter((task) => {
-    return task.hasCompleted === true;
+    return task.isCompleted === true;
   });
 
   return (
@@ -96,7 +109,7 @@ export function Dashboard() {
               <TaskCard
                 key={task.id}
                 id={task.id}
-                isCompleted={task.hasCompleted}
+                isCompleted={task.isCompleted}
                 content={task?.content}
                 onDeleteTask={deleteTask}
                 onCompleteTask={completeTask}
