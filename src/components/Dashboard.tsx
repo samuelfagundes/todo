@@ -21,7 +21,6 @@ export function Dashboard() {
   useEffect(() => {
     if (retriveTasks !== null && retriveTasks.length >= 1) {
       setTasks(JSON.parse(retriveTasks))
-      console.log(retriveTasks)
     }
   },[])
 
